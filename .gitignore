@@ -1,4 +1,4 @@
-
+.idea
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -16,7 +16,7 @@
 
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
-/phpunit.xml
+/phpunit.xml.dist
 ###< symfony/phpunit-bridge ###
 
 ###> symfony/asset-mapper ###
