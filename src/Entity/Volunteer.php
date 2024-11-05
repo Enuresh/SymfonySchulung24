@@ -24,7 +24,7 @@ class Volunteer
     private ?Event $event = null;
 
     #[ORM\ManyToOne(inversedBy: 'volunteers')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Project $project = null;
 
     public function getId(): ?int
