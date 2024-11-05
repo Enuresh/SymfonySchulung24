@@ -17,22 +17,20 @@ class EventController extends AbstractController
 {
 
     #[Route('/', name: 'app_event_index', methods: ['GET'])]
-    public function index(EventRepository $repository): JsonResponse
+    public function index(EventRepository $repository): Response
     {
-        $events = [];
-        foreach ($repository->findAll() as $event)
-        {
-            $events[] = ['id' => $event->getId(), 'name' => $event->getName()];
-        }
-        return $this->json($events);
+        $events = $repository->findAll();
+
+        return $this->render('event/list_events.html.twig', [
+            'events' => $events,
+        ]);
     }
 
     #[Route('/id/{id}', name: 'app_event_query_by_id', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function listEventByID(Event $event): Response
     {
-        return $this->json([
-            'id' => $event->getId(),
-            'name' => $event->getName()
+        return $this->render('event/show.html.twig', [
+            'event' => $event,
         ]);
     }
 
