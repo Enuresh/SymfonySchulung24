@@ -31,11 +31,19 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/projects/new', name: 'app_project_new', methods: ['GET', 'POST'])]
-    public function newProject(): Response
+    public function newProject(Request $request, EntityManagerInterface $entityManager): Response
     {
         $project = new Project();
         $form = $this->createForm(ProjectFormType::class, $project);
 
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $event = $form->getData();
+            $entityManager->persist($event);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_project_show', ['id' => $event->getId()]);
+        }
         return $this->render('project/new_project.html.twig', [
             'form' => $form,
         ]);

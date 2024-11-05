@@ -90,7 +90,7 @@ class Event
         return $this->isAccessible;
     }
 
-    public function setAccessible(bool $isAccessible): static
+    public function setIsAccessible(bool $isAccessible): static
     {
         $this->isAccessible = $isAccessible;
 

@@ -21,7 +21,7 @@ class EventFixtures extends Fixture
             $event = (new Event())
                 ->setName('SymfonyLive '.$year)
                 ->setDescription('Share your best practices, experience and knowledge with Symfony.')
-                ->setAccessible(true)
+                ->setIsAccessible(true)
                 ->setStartAt(new DateTimeImmutable('28-03-'.$year))
                 ->setEndAt(new DateTimeImmutable('29-03-'.$year))
             ;

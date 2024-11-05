@@ -49,7 +49,7 @@ class EventController extends AbstractController
         $event = (new Event())
             ->setName($name)
             ->setDescription('Some generic description')
-            ->setAccessible(true)
+            ->setIsAccessible(true)
             ->setStartAt(new \DateTimeImmutable($start))
             ->setEndAt(new \DateTimeImmutable($end));
 
@@ -71,11 +71,19 @@ class EventController extends AbstractController
     }
 
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
-    public function newEvent(): Response
+    public function newEvent(Request $request, EntityManagerInterface $entityManager): Response
     {
         $event = new Event();
         $form = $this->createForm(EventFormType::class, $event);
 
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $event = $form->getData();
+            $entityManager->persist($event);
+            $entityManager->flush();
+            return $this->redirectToRoute('event_routeapp_event_query_by_id', ['id' => $event->getId()]);
+        }
         return $this->render('event/new_event.html.twig', [
             'form' => $form,
         ]);
