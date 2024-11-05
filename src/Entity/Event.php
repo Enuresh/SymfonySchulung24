@@ -46,6 +46,10 @@ class Event
     #[ORM\ManyToMany(targetEntity: Organization::class, mappedBy: 'events')]
     private Collection $organizations;
 
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Project $project = null;
+
     public function __construct()
     {
         $this->volunteers = new ArrayCollection();
@@ -182,6 +186,18 @@ class Event
         if ($this->organizations->removeElement($organization)) {
             $organization->removeEvent($this);
         }
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
 
         return $this;
     }
