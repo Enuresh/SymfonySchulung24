@@ -94,7 +94,8 @@ class Organization
 
     public function addEvent(Event $event): static
     {
-        if (!$this->events->contains($event)) {
+        if (!$this->events->contains($event))
+        {
             $this->events->add($event);
         }
 
@@ -118,7 +119,8 @@ class Organization
 
     public function addProject(Project $project): static
     {
-        if (!$this->projects->contains($project)) {
+        if (!$this->projects->contains($project))
+        {
             $this->projects->add($project);
         }
 

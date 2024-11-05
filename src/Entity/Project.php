@@ -116,7 +116,8 @@ class Project
 
     public function addOrganization(Organization $organization): static
     {
-        if (!$this->organizations->contains($organization)) {
+        if (!$this->organizations->contains($organization))
+        {
             $this->organizations->add($organization);
             $organization->addProject($this);
         }
@@ -126,7 +127,8 @@ class Project
 
     public function removeOrganization(Organization $organization): static
     {
-        if ($this->organizations->removeElement($organization)) {
+        if ($this->organizations->removeElement($organization))
+        {
             $organization->removeProject($this);
         }
 
@@ -143,7 +145,8 @@ class Project
 
     public function addEvent(Event $event): static
     {
-        if (!$this->events->contains($event)) {
+        if (!$this->events->contains($event))
+        {
             $this->events->add($event);
             $event->setProject($this);
         }
@@ -153,9 +156,11 @@ class Project
 
     public function removeEvent(Event $event): static
     {
-        if ($this->events->removeElement($event)) {
+        if ($this->events->removeElement($event))
+        {
             // set the owning side to null (unless already changed)
-            if ($event->getProject() === $this) {
+            if ($event->getProject() === $this)
+            {
                 $event->setProject(null);
             }
         }
@@ -173,7 +178,8 @@ class Project
 
     public function addVolunteer(Volunteer $volunteer): static
     {
-        if (!$this->volunteers->contains($volunteer)) {
+        if (!$this->volunteers->contains($volunteer))
+        {
             $this->volunteers->add($volunteer);
             $volunteer->setProject($this);
         }
@@ -183,9 +189,11 @@ class Project
 
     public function removeVolunteer(Volunteer $volunteer): static
     {
-        if ($this->volunteers->removeElement($volunteer)) {
+        if ($this->volunteers->removeElement($volunteer))
+        {
             // set the owning side to null (unless already changed)
-            if ($volunteer->getProject() === $this) {
+            if ($volunteer->getProject() === $this)
+            {
                 $volunteer->setProject(null);
             }
         }

@@ -20,7 +20,7 @@ class Volunteer
     private ?\DateTimeImmutable $endAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'volunteers')]
-	#[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Event $event = null;
 
     #[ORM\ManyToOne(inversedBy: 'volunteers')]

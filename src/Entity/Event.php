@@ -143,7 +143,8 @@ class Event
 
     public function addVolunteer(Volunteer $volunteer): static
     {
-        if (!$this->volunteers->contains($volunteer)) {
+        if (!$this->volunteers->contains($volunteer))
+        {
             $this->volunteers->add($volunteer);
             $volunteer->setEvent($this);
         }
@@ -153,9 +154,11 @@ class Event
 
     public function removeVolunteer(Volunteer $volunteer): static
     {
-        if ($this->volunteers->removeElement($volunteer)) {
+        if ($this->volunteers->removeElement($volunteer))
+        {
             // set the owning side to null (unless already changed)
-            if ($volunteer->getEvent() === $this) {
+            if ($volunteer->getEvent() === $this)
+            {
                 $volunteer->setEvent(null);
             }
         }
@@ -173,7 +176,8 @@ class Event
 
     public function addOrganization(Organization $organization): static
     {
-        if (!$this->organizations->contains($organization)) {
+        if (!$this->organizations->contains($organization))
+        {
             $this->organizations->add($organization);
             $organization->addEvent($this);
         }
@@ -183,7 +187,8 @@ class Event
 
     public function removeOrganization(Organization $organization): static
     {
-        if ($this->organizations->removeElement($organization)) {
+        if ($this->organizations->removeElement($organization))
+        {
             $organization->removeEvent($this);
         }
 

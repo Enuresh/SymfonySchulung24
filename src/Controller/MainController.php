@@ -13,17 +13,17 @@ class MainController extends AbstractController
     #[Route('/', name: 'app_index', methods: ['GET'])]
     public function index(Request $request): Response
     {
-		$name = $request->query->get('name', 'World');
+        $name = $request->query->get('name', 'World');
 
-		return $this->render('main/index.html.twig', [
-			'name' => $name,
-		]);
+        return $this->render('main/index.html.twig', [
+            'name' => $name,
+        ]);
     }
 
-	#[Route('/contact', name: 'app_contact', methods: ['GET'])]
-	#[Template('/main/contact.html.twig')]
-	public function contact(Request $request): void
-	{
+    #[Route('/contact', name: 'app_contact', methods: ['GET'])]
+    #[Template('/main/contact.html.twig')]
+    public function contact(Request $request): void
+    {
 
-	}
+    }
 }
