@@ -11,19 +11,17 @@ class OrganizationFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $organization = new Organization();
-        $organization
-            ->setName('Sensio Labs')
-            ->setCreatedAt(new \DateTimeImmutable('2024-11-04'))
-            ->setPresentation('Symfony SAS is the company behind Symfony, the PHP Open-Source framework.')
-        ;
-
-        for ($i = 0; $i < 10; $i++)
+        $org = (new Organization())
+            ->setName('Symfony')
+            ->setCreatedAt(new \DateTimeImmutable('2018'))
+            ->setPresentation('Symfony SAS is the company behind Symfony, the PHP Open-Source framework.');
+        for ($i = 15; $i <= 25; $i++)
         {
-            $organization->addEvent($this->getReference(EventFixtures::EVENT_REF.$i));
+            $org->addEvent($this->getReference(EventFixtures::SF_LIVE . $i));
         }
+        $org->addProject($this->getReference(ProjectFixtures::SFLIVE_PROJECT));
 
-        $manager->persist($organization);
+        $manager->persist($org);
         $manager->flush();
     }
 
@@ -31,6 +29,7 @@ class OrganizationFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             EventFixtures::class,
+            ProjectFixtures::class
         ];
     }
 }

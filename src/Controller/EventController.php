@@ -5,11 +5,9 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use http\Env\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/event', name: 'event_route')]
@@ -40,9 +38,9 @@ class EventController extends AbstractController
     #[Route('/{name}/{start}/{end}', name: 'app_event_new')]
     public function newEvent
     (
-        string $name,
-        string $start,
-        string $end,
+        string                 $name,
+        string                 $start,
+        string                 $end,
         EntityManagerInterface $entityManger
     ): Response
     {
@@ -51,8 +49,7 @@ class EventController extends AbstractController
             ->setDescription('Some generic description')
             ->setAccessible(true)
             ->setStartAt(new \DateTimeImmutable($start))
-            ->setEndAt(new \DateTimeImmutable($end))
-        ;
+            ->setEndAt(new \DateTimeImmutable($end));
 
         $entityManger->persist($event);
 
