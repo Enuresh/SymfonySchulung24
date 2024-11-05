@@ -22,7 +22,7 @@ class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/project/{id}', name: 'app_project_show', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route('/projects/{id}', name: 'app_project_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showProject(Project $project): Response
     {
         return $this->render('project/show_project.html.twig', [
@@ -30,12 +30,14 @@ class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/project/new', name: 'app_project_new', methods: ['GET', 'POST'])]
+    #[Route('/projects/new', name: 'app_project_new', methods: ['GET', 'POST'])]
     public function newProject(): Response
     {
         $project = new Project();
         $form = $this->createForm(ProjectFormType::class, $project);
 
-        return new Response('Project created');
+        return $this->render('project/new_project.html.twig', [
+            'form' => $form,
+        ]);
     }
 }

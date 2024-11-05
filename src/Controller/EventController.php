@@ -70,12 +70,14 @@ class EventController extends AbstractController
         return new JsonResponse($event);
     }
 
-    #[Route('/event/new', name: 'app_event_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
     public function newEvent(): Response
     {
         $event = new Event();
         $form = $this->createForm(EventFormType::class, $event);
 
-        return new Response('Event created');
+        return $this->render('event/new_event.html.twig', [
+            'form' => $form,
+        ]);
     }
 }
