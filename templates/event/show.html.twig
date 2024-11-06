@@ -25,6 +25,9 @@
                                     <p class="my-0">Organizations: {{ orgs|map(o => '<a href="'~o.link~'">'~o.name~'</a>')|join(', ')|raw }}</p>
                                     <p>Accessible
                                         : {{ event.accessible ? '<span style="color: limegreen;">Yes</span>' : '<span style="color: red;">No</span>' }}</p>
+                                    <a href="{{ path('app_volunteer_new', {'event': event.id}) }}">
+                                        <button class="btn text-white" style="background-color: limegreen;">Volunteer on this event</button>
+                                    </a>
                                 </div>
                                 <p class="fst-italic">{{ event.volunteers.count }} volunteers yet.</p>
                             </div>
@@ -40,7 +43,7 @@
         <div class="row">
             <div class="col-md-8 m-auto justify-content-start">
                 <a href="{{ path('event_routeapp_event_index') }}">
-                    <button class="btn text-white" style="background-color: limegreen;">Back</button>
+                    <button class="btn text-black bg-white" style="border-color: limegreen;">Back</button>
                 </a>
             </div>
         </div>
