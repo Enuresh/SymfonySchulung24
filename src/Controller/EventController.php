@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Form\EventFormType;
 use App\Repository\EventRepository;
+use App\Search\DatabaseEventSearch;
+use App\Search\EventSearchInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,9 +19,9 @@ class EventController extends AbstractController
 {
 
     #[Route('/', name: 'app_event_index', methods: ['GET'])]
-    public function index(EventRepository $repository): Response
+    public function index(Request $request, EventSearchInterface $eventSearch): Response
     {
-        $events = $repository->findAll();
+        $events = $eventSearch->searchByName($request->query->get('name', null));
 
         return $this->render('event/list_events.html.twig', [
             'events' => $events,
