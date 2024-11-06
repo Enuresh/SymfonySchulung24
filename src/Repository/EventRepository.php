@@ -16,6 +16,36 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
+    public function getEventsByDate
+    (
+        ?\DateTimeImmutable $startDate = null,
+        ?\DateTimeImmutable $endDate = null
+    ): array
+    {
+        if ($startDate === null && $endDate === null)
+        {
+            throw new \InvalidArgumentException('Start date or end date must not be empty.');
+        }
+
+        $queryBuilder = $this->createQueryBuilder('e')->select('e');
+
+        if ($endDate !== null)
+        {
+            $queryBuilder
+                ->where('e.startAt >= :startDate')
+                ->setParameter('startDate', $startDate)
+            ;
+        }
+        elseif ($startDate !== null)
+        {
+            $queryBuilder->where('e.endAt <= :endDate')
+            ->setParameter('endDate', $endDate)
+            ;
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Event[] Returns an array of Event objects
     //     */

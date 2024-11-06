@@ -3,10 +3,16 @@
         <a class="navbar-brand" href="/">Sensio<span style="color: limegreen;">Events</span></a>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-                <a href="/" class="nav-link">Home</a>
+                <a href="{{ path('app_index') }}" class="nav-link">Home</a>
             </li>
             <li class="nav-item">
-                <a href="/contact" class="nav-link">Contact</a>
+                <a href="{{ path('app_contact') }}" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('event_routeapp_event_index') }}" class="nav-link">Event</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('app_project_list') }}" class="nav-link">Projects</a>
             </li>
         </ul>
     </div>

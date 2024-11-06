@@ -46,6 +46,10 @@ class Event
     #[ORM\ManyToMany(targetEntity: Organization::class, mappedBy: 'events')]
     private Collection $organizations;
 
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Project $project = null;
+
     public function __construct()
     {
         $this->volunteers = new ArrayCollection();
@@ -86,7 +90,7 @@ class Event
         return $this->isAccessible;
     }
 
-    public function setAccessible(bool $isAccessible): static
+    public function setIsAccessible(bool $isAccessible): static
     {
         $this->isAccessible = $isAccessible;
 
@@ -139,7 +143,8 @@ class Event
 
     public function addVolunteer(Volunteer $volunteer): static
     {
-        if (!$this->volunteers->contains($volunteer)) {
+        if (!$this->volunteers->contains($volunteer))
+        {
             $this->volunteers->add($volunteer);
             $volunteer->setEvent($this);
         }
@@ -149,9 +154,11 @@ class Event
 
     public function removeVolunteer(Volunteer $volunteer): static
     {
-        if ($this->volunteers->removeElement($volunteer)) {
+        if ($this->volunteers->removeElement($volunteer))
+        {
             // set the owning side to null (unless already changed)
-            if ($volunteer->getEvent() === $this) {
+            if ($volunteer->getEvent() === $this)
+            {
                 $volunteer->setEvent(null);
             }
         }
@@ -169,7 +176,8 @@ class Event
 
     public function addOrganization(Organization $organization): static
     {
-        if (!$this->organizations->contains($organization)) {
+        if (!$this->organizations->contains($organization))
+        {
             $this->organizations->add($organization);
             $organization->addEvent($this);
         }
@@ -179,9 +187,22 @@ class Event
 
     public function removeOrganization(Organization $organization): static
     {
-        if ($this->organizations->removeElement($organization)) {
+        if ($this->organizations->removeElement($organization))
+        {
             $organization->removeEvent($this);
         }
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
 
         return $this;
     }

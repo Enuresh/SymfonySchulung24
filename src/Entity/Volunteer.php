@@ -20,8 +20,12 @@ class Volunteer
     private ?\DateTimeImmutable $endAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'volunteers')]
-	#[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Event $event = null;
+
+    #[ORM\ManyToOne(inversedBy: 'volunteers')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Project $project = null;
 
     public function getId(): ?int
     {
@@ -60,6 +64,18 @@ class Volunteer
     public function setEvent(?Event $event): static
     {
         $this->event = $event;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
 
         return $this;
     }
