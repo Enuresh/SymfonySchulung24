@@ -6,7 +6,7 @@ use App\Entity\Event;
 use App\Repository\EventRepository;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 
-#[AsAlias]
+
 final readonly class DatabaseEventSearch implements EventSearchInterface
 {
 
