@@ -12,31 +12,38 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class ApiResultParser
 {
     protected bool $isOrgOrAdmin = false;
-    public function __construct(
-        protected readonly EntityManagerInterface $manager,
-        protected readonly ApiToEventTransformer $eventTransformer,
-        protected readonly ApiToOrganizationTransformer $organizationTransformer,
+
+    public function __construct
+    (
+        protected readonly EntityManagerInterface        $manager,
+        protected readonly ApiToEventTransformer         $eventTransformer,
+        protected readonly ApiToOrganizationTransformer  $organizationTransformer,
         protected readonly AuthorizationCheckerInterface $checker
-    ) {
-        $this->isOrgOrAdmin = $this->checker->isGranted('ROLE_ORGANIZER') || $this->checker->isGranted('ROLE_WEBSITE');
+    )
+    {
+        $this->isOrgOrAdmin = $this->checker->isGranted('ROLE_ORGANIZER')
+            || $this->checker->isGranted('ROLE_WEBSITE');
     }
 
     public function parseResults(array $results): iterable
     {
-        return \array_map(function (array $apiEvent) {
+        return \array_map(function (array $apiEvent)
+        {
             $event = $this->findOrCreateEvent($apiEvent);
 
-            foreach ($apiEvent['organizations'] as $org) {
+            foreach ($apiEvent['organizations'] as $org)
+            {
                 $entity = $this->findOrCreateOrganization($org);
                 $entity->addEvent($event);
             }
 
-            if ($this->isOrgOrAdmin) {
+            if ($this->isOrgOrAdmin)
+            {
                 $this->manager->flush();
             }
 
             return $event;
-        },$results);
+        }, $results);
     }
 
     private function findOrCreateEvent(array $apiEvent): Event
@@ -48,10 +55,12 @@ class ApiResultParser
                 'startAt' => new \DateTimeImmutable($apiEvent['startDate'])
             ]);
 
-        if (null === $event) {
+        if (null === $event)
+        {
             $event = $this->eventTransformer->transform($apiEvent);
 
-            if ($this->isOrgOrAdmin) {
+            if ($this->isOrgOrAdmin)
+            {
                 $this->manager->persist($event);
             }
         }
@@ -63,10 +72,12 @@ class ApiResultParser
     {
         $entity = $this->manager->getRepository(Organization::class)->findOneBy(['name' => $org['name']]);
 
-        if (null === $entity) {
+        if (null === $entity)
+        {
             $entity = $this->organizationTransformer->transform($org);
 
-            if ($this->isOrgOrAdmin) {
+            if ($this->isOrgOrAdmin)
+            {
                 $this->manager->persist($entity);
             }
         }
