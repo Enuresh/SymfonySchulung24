@@ -46,6 +46,17 @@ class EventRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
+    public function searchLike(string $name): array
+    {
+        $queryBuilder = $this->createQueryBuilder('e');
+
+        return $queryBuilder
+            ->andWhere($queryBuilder->expr()->like('e.name', ':name'))
+            ->setParameter('name', sprintf("%%%s%%", $name))
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Event[] Returns an array of Event objects
     //     */

@@ -23,10 +23,6 @@ class ProjectFormType extends AbstractType
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable',
             ])
-            ->add('updatedAt', DateType::class, [
-                'widget' => 'single_text',
-                'input' => 'datetime_immutable',
-            ])
             ->add('organizations', EntityType::class, [
                 'class' => Organization::class,
                 'choice_label' => 'name',

@@ -5,7 +5,10 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Form\EventFormType;
 use App\Repository\EventRepository;
+use App\Search\DatabaseEventSearch;
+use App\Search\EventSearchInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,13 +20,21 @@ class EventController extends AbstractController
 {
 
     #[Route('/', name: 'app_event_index', methods: ['GET'])]
-    public function index(EventRepository $repository): Response
+    public function index(Request $request, DatabaseEventSearch $eventSearch): Response
     {
-        $events = $repository->findAll();
+        $events = $eventSearch->searchByName($request->query->get('name', null));
 
         return $this->render('event/list_events.html.twig', [
             'events' => $events,
         ]);
+    }
+
+    #[Route('/search', name: 'app_event_search', methods: ['GET'])]
+    #[Template('event/search_events.html.twig')]
+    public function searchEvents(Request $request, EventSearchInterface $search): array
+    {
+        $events = $search->searchByName($request->query->get('name', null))['hydra:member'];
+        return ['events' => $events];
     }
 
     #[Route('/id/{id}', name: 'app_event_query_by_id', requirements: ['id' => '\d+'], methods: ['GET'])]
