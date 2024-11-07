@@ -7,6 +7,7 @@ use App\Form\EventFormType;
 use App\Repository\EventRepository;
 use App\Search\DatabaseEventSearch;
 use App\Search\EventSearchInterface;
+use App\Security\Voter\EditionVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,6 +49,7 @@ class EventController extends AbstractController
     /**
      * @throws \DateMalformedStringException
      */
+    /*
     #[Route('/{name}/{start}/{end}', name: 'app_event_new_with_start_and_end')]
     public function newEventWithStartAndEnd
     (
@@ -69,7 +71,7 @@ class EventController extends AbstractController
         $entityManger->flush();
 
         return new Response('Event created!', Response::HTTP_CREATED);
-    }
+    }*/
 
     /**
      * @throws \DateMalformedStringException
@@ -81,16 +83,25 @@ class EventController extends AbstractController
         return new JsonResponse($event);
     }
 
+    #[Route('/id/{id}/edit', name: 'app_event_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
-    public function newEvent(Request $request, EntityManagerInterface $entityManager): Response
+    public function newEvent(Request $request, EntityManagerInterface $entityManager, Event $event = new Event()): Response
     {
-        $event = new Event();
-        $form = $this->createForm(EventFormType::class, $event);
+        if ($event instanceof Event)
+        {
+            $this->denyAccessUnlessGranted(EditionVoter::EVENT, $event);
+        }
 
+        $form = $this->createForm(EventFormType::class, $event);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid())
         {
-            $event = $form->getData();
+            if (!$event->getId())
+            {
+                $event->setCreatedBy($this->getUser());
+            }
+
             $entityManager->persist($event);
             $entityManager->flush();
             return $this->redirectToRoute('event_routeapp_event_query_by_id', ['id' => $event->getId()]);

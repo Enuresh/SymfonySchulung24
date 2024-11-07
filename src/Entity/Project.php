@@ -43,7 +43,6 @@ class Project
      * @var Collection<int, Event>
      */
     #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'project')]
-    #[Assert\Valid]
     private Collection $events;
 
     /**
@@ -51,6 +50,9 @@ class Project
      */
     #[ORM\OneToMany(targetEntity: Volunteer::class, mappedBy: 'project')]
     private Collection $volunteers;
+
+    #[ORM\ManyToOne]
+    private ?User $createdBy = null;
 
     public function __construct()
     {
@@ -203,6 +205,18 @@ class Project
                 $volunteer->setProject(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): static
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }
